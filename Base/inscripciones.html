@@ -125,8 +125,40 @@
             font-family: 'Zilla Slab', serif;
         }
 
+        /* Estilos para el boton de inscribir */
+        .btn-custom {
+            color: #fff;
+            background-color: #017601;
+            border-color: #008000;
+            font-weight: bold;
+        }
 
+        .side-menu {
+            padding: 15px;
+            width: 200px;
+            background-color: #f7f7f7;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+        }
 
+        .side-menu ul {
+            margin: 0;
+            padding: 5;
+        }
+
+        .side-menu li a {
+            display: block;
+            padding: 20px;
+            text-decoration: none;
+            color: black;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .side-menu li a:hover {
+            background-color: #f6f6f6;
+        }
     </style>
     <title>Página de Inicio</title>
 </head>
@@ -156,97 +188,54 @@
         </div>
     </nav>
 
+    <div class="side-menu">
+        <h2>Filtrar por días de la semana</h2>
+        <ul>
+            <li><a href="#">Todos</a></li>
+            <li><a href="#">Lunes</a></li>
+            <li><a href="#">Martes</a></li>
+            <li><a href="#">Miercoles</a></li>
+            <li><a href="#">Jueves</a></li>
+            <li><a href="#">Viernes</a></li>
+            <li><a href="#">Sabado</a></li>
+            <li><a href="#">Domingo</a></li>
+        </ul>
+    </div>
+
     <div class="container">
         <h1 class="mt-4 mb-4">Mis Asesorías Inscritas</h1>
         <div class="row">
             
-            <div class="col-md-6">
-                <div class="card mb-4 rounded border">
-                    <div class="card-body">
-                        <h5 class="card-title">Profesor: Profesor de prueba 1</h5>
-                        <p class="card-text">Materia: Materia de prueba 1</p>
-                        <p class="card-text">Horario: Días de la semana, Horario 1</p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">
-                            Anular Inscripcion
-                        </button>
+            <div class="col-md-6 card-item">
+                <div class="card-body">
+                    <div class="card" style="width: 30rem; border: 2px solid black; border-radius: 20px; background-color: rgb(218, 254, 218);">
+                        <div class="card-body">
+                           <h5 class="card-title" style="color: black;" id="Profesor">Professor's Name</h5>
+                           <hr>
+                           <p class="card-text" style="color: black;" id="Materia">Class Name</p>
+                           <p class="card-text" style="color: black;" id="Dia">Miercoles</p>
+                           <p class="card-text" style="color: black;" id="Hora">Hour of the Day</p>
+                           <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#confirmModal">
+                            Anular Inscripción
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
     
-            <div class="col-md-6">
-                <div class="card mb-4 rounded border">
-                    <div class="card-body">
-                        <h5 class="card-title">Profesor: Profesor de prueba 2</h5>
-                        <p class="card-text">Materia: Materia de prueba 2</p>
-                        <p class="card-text">Horario: Días de la semana, Horario 2</p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">
-                            Anular Inscripcion
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card mb-4 rounded border">
-                    <div class="card-body">
-                        <h5 class="card-title">Profesor: Profesor de prueba 3</h5>
-                        <p class="card-text">Materia: Materia de prueba 3</p>
-                        <p class="card-text">Horario: Días de la semana, Horario 3</p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">
-                            Anular Inscripcion
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card mb-4 rounded border">
-                    <div class="card-body">
-                        <h5 class="card-title">Profesor: Profesor de prueba 4</h5>
-                        <p class="card-text">Materia: Materia de prueba 4</p>
-                        <p class="card-text">Horario: Días de la semana, Horario 4</p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">
-                            Anular Inscripcion
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card mb-4 rounded border">
-                    <div class="card-body">
-                        <h5 class="card-title">Profesor: Profesor de prueba 4</h5>
-                        <p class="card-text">Materia: Materia de prueba 4</p>
-                        <p class="card-text">Horario: Días de la semana, Horario 4</p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">
-                            Anular Inscripcion
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card mb-4 rounded border">
-                    <div class="card-body">
-                        <h5 class="card-title">Profesor: Profesor de prueba 4</h5>
-                        <p class="card-text">Materia: Materia de prueba 4</p>
-                        <p class="card-text">Horario: Días de la semana, Horario 4</p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">
-                            Anular Inscripcion
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card mb-4 rounded border">
-                    <div class="card-body">
-                        <h5 class="card-title">Profesor: Profesor de prueba 4</h5>
-                        <p class="card-text">Materia: Materia de prueba 4</p>
-                        <p class="card-text">Horario: Días de la semana, Horario 4</p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">
-                            Anular Inscripcion
-                        </button>
+            <div class="col-md-6 card-item">
+                <div class="card-body">
+                    <div class="card" style="width: 30rem; border: 2px solid black; border-radius: 20px; background-color: rgb(218, 254, 218);">
+                        <div class="card-body">
+                           <h5 class="card-title" style="color: black;" id="Profesor">Professor's Name</h5>
+                           <hr>
+                           <p class="card-text" style="color: black;" id="Materia">Class Name</p>
+                           <p class="card-text" style="color: black;" id="Dia">Lunes</p>
+                           <p class="card-text" style="color: black;" id="Hora">Hour of the Day</p>
+                           <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#confirmModal">
+                            Anular Inscripción
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -312,13 +301,37 @@
     </div>
 
     <!-- Incluye jQuery y Bootstrap JS (puedes utilizar los enlaces CDN) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         function mostrarAlerta() {
             alert('Cambios confirmados con éxito!');
         }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".side-menu a").click(function (e) {
+                e.preventDefault();
+                var selectedDay = $(this).text().trim().toLowerCase();
+    
+                if (selectedDay === "todos") {
+                    // Mostrar todas las tarjetas si se selecciona "Todos"
+                    $(".card-item").show();
+                } else {
+                    // Mostrar todas las tarjetas
+                    $(".card-item").show();
+    
+                    // Ocultar las tarjetas que no tienen el día seleccionado
+                    $(".card-item").filter(function () {
+                        var cardDay = $(this).find("#Dia").text().trim().toLowerCase();
+                        return cardDay !== selectedDay;
+                    }).hide();
+                }
+            });
+        });
     </script>
 </body>
 </html>
