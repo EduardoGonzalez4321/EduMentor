@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Enlace a Google Fonts para Zilla Slab -->
+    <link href="https://fonts.googleapis.com/css?family=Zilla+Slab:700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <meta http-equiv="x-dns-prefetch-control" content="off">
+    <title>EduMentor login page</title>
+    <style>
+        .navbar .navbar-nav .nav-link:hover {
+            border-bottom: 2px solid #000000; /* Color y estilo de la línea */
+        }
+        .black-box {
+            background-color: #000;
+            padding: 20px;
+        }
+
+        .rol-selector {
+            display: flex;
+            flex-direction: row;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+    <!-- Nav bar-->
+    
+
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form>
+                <h1>Crea tu cuenta</h1>
+              
+                <input type="text" placeholder="Nombre" required>
+              
+                <input type="email" placeholder="Correo Electrónico" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+              
+                <input type="password" placeholder="Contraseña" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+              
+                <!-- Genero -->
+                <!-- Menú desplegable -->
+                <label for="genero">Género:</label>
+                <select id="genero" name="genero" required>
+                  <option value="M">M</option>
+                  <option value="H">H</option>
+                </select>
+              
+                <!-- Agrega el menú desplegable aquí -->
+                <div class="rol-selector" required>
+                  <input type="radio" id="estudiante" name="rol" value="estudiante" required>
+                  <label for="estudiante" style="margin-right: 100px;">Estudiante</label>
+              
+                  <input type="radio" id="docente" name="rol" value="docente" required>
+                  <label for="docente">Docente</label>
+                </div>
+              
+                <button onclick="createUser()">Registrarse</button>
+              </form>
+          </div>
+        <div class="form-container sign-in">
+            <form>
+                <h1>Sign In</h1>
+               
+                <span>Usa tu usuario y password</span>
+                <input type="email" placeholder="Email" [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$>
+                <input type="password" placeholder="Password">
+                <a href="#">Forget Your Password?</a>
+                <button onclick="handleLoginButtonClick()">Sign In</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Bienvenido de vuelta!</h1>
+                    <p>Introduce tus detalles de inicio de sesion para acceder al sitio!</p>
+                    <button class="hidden" id="login">Sign In</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Hola usuario!</h1>
+                    <p>Registrate con tus datos personales para acceder a todo el potencial de nuestros servicios!</p>
+                    <button class="hidden" id="register">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php
+
+     include 'cors.php';
+
+    ?>
+
+    <script src="scripts/script.js"></script>
+    <script src="scripts/user.js"></script>
+    <script src="scripts/userHandler.js"></script>
+</body>
+
+</html>
