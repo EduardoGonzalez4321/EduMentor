@@ -9,7 +9,7 @@
     "nodemon": "^3.0.1"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "name": "api",
   "version": "1.0.0",
