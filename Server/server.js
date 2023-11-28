@@ -19,6 +19,8 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
+const port = process.env.PORT || 8080;
+
 app.use(cors(corsOptions));
 
 // Middleware para parsear el cuerpo de las solicitudes como JSON
@@ -50,9 +52,9 @@ const options = {
 };
 
 // Crear servidor HTTPS
-const server = https.createServer(options, app).listen(443);
+//const server = https.createServer(options, app).listen(443);
 
 // Iniciar servidor
-//server.listen(port, () => {
-  //console.log(`EduMentor API listening on port ${port} with SSL.`);
-//});
+app.listen(port, () => {
+  console.log(`EduMentor API listening on port ${port} with SSL.`);
+});
