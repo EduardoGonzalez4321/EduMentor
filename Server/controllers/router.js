@@ -10,17 +10,15 @@ router.route('/')
 // Tendremos que modificar el post para retornar datos al server de PHP
 router.route('/login').post(async (req, res) => {
   try {
-    // Mandamos al handler los datos y guardamos el retorno
+    // Mandamos al handler los datos y esperamos a que se resuelva la promesa
     let flag = await dataHandler.checkData(req, res);
-    console.log(flag);
 
-    if (flag == 0) {
-      console.log('Credenciales de inicio de sesion invalidas');
+    if (flag === 0) {
+      console.log('Credenciales de inicio de sesión inválidas');
       res.status(401).send('Invalid login credentials');
     } else {
-      console.log("TOKEN VALIDO", flag);
-      res.type("application/json");
-      res.status(200).json(flag);
+      res.type("text/data");
+      res.status(200).send(flag);
     }
   } catch (error) {
     console.error('Error en la función login:', error);
@@ -33,7 +31,6 @@ router.route('/verifyToken/:token')
 
     // Sacamos el token del body
     let key = req.params.token;
-    console.log("DENTRO DEL ROUTE");
     console.log(key);
 
     // Mandamos a la funcion verificadora
