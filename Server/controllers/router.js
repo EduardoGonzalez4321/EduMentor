@@ -4,7 +4,7 @@ const router = require('express').Router();
 const dataHandler = require('./data_handler');
 
 router.route('/')
-  .post((req, res) => dataHandler.createUser(req, res));
+  .post(async (req, res) => await dataHandler.createUser(req, res));
 
 // Hacemos ruta de la api /api/users/login para revisar en la base si existe el usuario y checar el hash tambien
 // Tendremos que modificar el post para retornar datos al server de PHP
