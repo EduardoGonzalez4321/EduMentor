@@ -47,10 +47,8 @@ async function checkData(req, res) {
   // Crear una instancia del cliente de MongoDB
   let client = new MongoClient(mongoDB);
 
-  console.log("Antes de conectar");
   // Haremos pruebas de la conexion a Mongo
   try {
-    console.log("DENTRO DEL TRY");
     await client.connect();
 
     const database = client.db();
