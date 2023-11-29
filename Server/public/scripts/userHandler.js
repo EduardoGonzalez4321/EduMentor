@@ -20,7 +20,7 @@ function createUser() {
    console.log(JSON.stringify(usuario));
 
    // Realizamos la solicitud POST al servidor
-  fetch('https://127.0.0.1/api/users', {
+  fetch('http://127.0.0.1:8080/api/users', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ function createUser() {
   .then(data => {
       // Hacemos algo con la respuesta del servidor
       alert('Usuario creado con éxito!');
-    window.location.replace("https://127.0.0.1/home.html");
+    window.location.replace("http://127.0.0.1:8080/home.html");
       console.log(data); // Puedes imprimir la respuesta en la consola si es útil
   })
   .catch(error => {
@@ -51,7 +51,7 @@ function createUser() {
       alert('Hubo un problema al crear el usuario. Por favor, inténtalo de nuevo.');
   });
 
-  window.location.replace("https://127.0.0.1/home.html");
+  window.location.replace("http://127.0.0.1:8080/home.html");
 }
 
 async function setCookie(name, value, days) {
@@ -65,66 +65,56 @@ async function setCookie(name, value, days) {
 }
 
 // Agrega un then para manejar el redireccionamiento
+// Agrega un then para manejar el redireccionamiento
 function loginUser() {
   return new Promise((resolve, reject) => {
-    var mail = document.querySelector('input[placeholder="Email"]').value;
-    var password = document.querySelector('input[placeholder="Password"]').value;
+    try {
+      const mail = document.querySelector('input[placeholder="Email"]').value;
+      const password = document.querySelector('input[placeholder="Password"]').value;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://127.0.0.1:443/api/users/login', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        try {
-          const data = JSON.parse(xhr.responseText);
-          resolve(data);
-        } catch (error) {
-          reject(error);
-        }
-      } else {
-        reject(new Error(`Error en la solicitud: ${xhr.status}`));
-      }
-    };
-
-    xhr.onerror = function () {
+      fetch('http://127.0.0.1:8080/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: mail,
+          pass: password,
+        }),
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.text(); // Almacena el token JWT como una cadena
+          } else if (response.status === 401) {
+            console.log("ENTRAMOS AL 401");
+            return Promise.resolve('0'); // Retorna '0' en caso de fallo (código 401 indica fallo de autenticación)
+          } else {
+            throw new Error(`Error en la solicitud: ${response.status}`);
+          }
+        })
+        .then(data => resolve(data)) // Resuelve con el token JWT en caso de éxito
+        .catch(error => reject(error));
+    } catch (error) {
       reject(new Error('Error en la solicitud'));
-    };
-
-    let bodyData = JSON.stringify({
-      email: mail,
-      pass: password
-    });
-
-    xhr.send(bodyData);
+    }
   });
 }
 
 // Maneja el evento onclick del botón
 async function handleLoginButtonClick() {
   try {
-    let flag = await loginUser();
-    console.log(flag);
+    const flag = await loginUser();
+    console.log("DENTRO DEL HANDLER: ", flag);
 
     // Solo redirige si el inicio de sesión fue exitoso
-    /*
-    if (flag != 0) {
-      // Alertamos que el login es correcto
-      alert('Inicio de sesión exitoso!');
-      
-      // Establecemos el jwtCookie
-      // Guardamos el jwt como cookie
-      */
+    if (flag !== '0') {
       setCookie("jwt", flag, 7);
-      
-      // Mandamos a asesorias después de que se resuelva la promesa de loginUser
-      window.location.replace('https://127.0.0.1/asesorias.html');
-    /*
-    } else {
+      alert("Inicio de sesión exitoso!");
+      window.location.replace('http://127.0.0.1:8080/asesorias.html');
+    } else if (flag === '0') {
       // Puedes mostrar un mensaje adicional si el inicio de sesión no fue exitoso
       alert('Inicio de sesión incorrecto!');
     }
-    */
 
     // Aquí puedes realizar acciones adicionales según la respuesta de la API
   } catch (error) {
@@ -133,6 +123,7 @@ async function handleLoginButtonClick() {
     console.error('Error al iniciar sesión:', error);
   }
 }
+
 
 // Aqui haremos la funcion para verificar el token cada vez que estemos dentro del panel
 // de asesorias e inscripciones
@@ -151,7 +142,7 @@ async function verificarToken() {
       return;
     }
 
-    const response = await fetch(`https://127.0.0.1/api/users/verifyToken/${jwtCookie}`, {
+    const response = await fetch(`http://127.0.0.1:8080/api/users/verifyToken/${jwtCookie}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
