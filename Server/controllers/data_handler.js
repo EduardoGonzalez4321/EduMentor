@@ -1,127 +1,149 @@
 "use strict";
 
-const User = require('../models/users');
-const bcrypt = require('bcrypt');
-const { MongoClient } = require('mongodb');
-let jwt = require('jsonwebtoken');
+// Descomentar hasta que hagamos todo el servidor con node
+// const mongoose = require('mongoose');
 
+function createUser() {
 
-function createUser(req, res) {
+    // Alertamos al usuario por los fallos del fetch asincrono a la primera, ya si salen errores despues, ni modo
+    //alert('Usuario creado con exito!');
 
-  // Encriptamos password
-  const usuario = req.body;
+   // Sacamos de los values del body todos los valores y encriptamos password
+   var nombre = document.querySelector('input[placeholder="Nombre"]').value;
+   var correo = document.querySelector('input[placeholder="Correo Electrónico"]').value;
+   var password = document.querySelector('input[placeholder="Contraseña"]').value;
+   var rol = document.querySelector('input[name="rol"]:checked').value;
+   var genero = document.getElementById('genero').value;
 
-  // Hasheamos la contrasena
-  let encryptedPassword = bcrypt.hashSync(usuario._password, 10);
+   // Creamos objeto de usuario para despues mandarlo a mongo y crear el usuario
+   let usuario = new User(nombre, correo, password, rol, genero);
+   console.log(JSON.stringify(usuario));
 
-  // Establecemos el nuevo hash
-  usuario._password = encryptedPassword;
-
-  // Pasamos la var usuario ya con el hash establecido
-  let user = User(usuario);
-
-  user.save().then((user) => {
-    res.set('Content-Type', 'text/plain; charset=utf-8');
-    res.send(`User ${user._name} was created`);
-  });
+   // Realizamos la solicitud POST al servidor
+   fetch('http://127.0.0.1:8080/api/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(usuario)
+  })
+    .then(response => response.text())  // Cambia response.json() a response.text()
+    .then(data => {
+      alert('Usuario creado con éxito!');
+      window.location.replace("http://127.0.0.1:8080/home.html");
+      console.log(data);
+    })
+    .catch(error => {
+      console.error('Error al crear el usuario:', error);
+      alert('Hubo un problema al crear el usuario. Por favor, inténtalo de nuevo.');
+    });
 
 }
 
-// FUNCION DE PRUEBA
-/*
-function listDatabases(client){
-  let databasesList = client.db().admin().listDatabases();
+async function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + value + expires + "; path=/";
+}
 
-  console.log("Databases:");
-  databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-};
-*/
+// Agrega un then para manejar el redireccionamiento
+// Agrega un then para manejar el redireccionamiento
+function loginUser() {
+  return new Promise((resolve, reject) => {
+    try {
+      const mail = document.querySelector('input[placeholder="Email"]').value;
+      const password = document.querySelector('input[placeholder="Password"]').value;
 
-async function checkData(req, res) {
+      fetch('http://127.0.0.1:8080/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: mail,
+          pass: password,
+        }),
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.text(); // Almacena el token JWT como una cadena
+          } else if (response.status === 401) {
+            console.log("ENTRAMOS AL 401");
+            return Promise.resolve('0'); // Retorna '0' en caso de fallo (código 401 indica fallo de autenticación)
+          } else {
+            throw new Error(`Error en la solicitud: ${response.status}`);
+          }
+        })
+        .then(data => resolve(data)) // Resuelve con el token JWT en caso de éxito
+        .catch(error => reject(error));
+    } catch (error) {
+      reject(new Error('Error en la solicitud'));
+    }
+  });
+}
 
-  // Bandera de retorno para la funcion de login en el lado del servidor apache
-  let flag;
-
-  // Nos conectamos a mongo para hacer las consultas
-  let mongoDB = 'mongodb+srv://admin:i1s97oeXkWt6AtzL@cluster0.bzzfvvd.mongodb.net/usersDB';
-  // Crear una instancia del cliente de MongoDB
-  let client = new MongoClient(mongoDB);
-
-  // Haremos pruebas de la conexion a Mongo
+// Maneja el evento onclick del botón
+async function handleLoginButtonClick() {
   try {
-    await client.connect();
+    const flag = await loginUser();
+    console.log("DENTRO DEL HANDLER: ", flag);
 
-    const database = client.db();
-    const collection = database.collection('users');
+    // Solo redirige si el inicio de sesión fue exitoso
+    if (flag !== '0') {
+      setCookie("jwt", flag, 7);
+      alert("Inicio de sesión exitoso!");
+      window.location.replace('http://127.0.0.1:8080/asesorias.html');
+    } else if (flag === '0') {
+      // Puedes mostrar un mensaje adicional si el inicio de sesión no fue exitoso
+      alert('Inicio de sesión incorrecto!');
+    }
 
-    const resultado = await collection.findOne({ _email: req.body.email });
+    // Aquí puedes realizar acciones adicionales según la respuesta de la API
+  } catch (error) {
+    // Maneja errores aquí si es necesario
+    alert('Error al iniciar sesión');
+    console.error('Error al iniciar sesión:', error);
+  }
+}
 
-    if (resultado) {
-      console.log('Usuario encontrado: ', resultado);
-      const match = await bcrypt.compare(req.body.pass, resultado._password);
 
-      if (match) {
-        console.log('Las passwords coinciden. Inicio de sesion exitoso.');
-        const token = await new Promise((resolve, reject) => {
-          jwt.sign(
-            {
-              uid: resultado._id,
-              email: resultado._email,
-              role: resultado._role
-              // Puedes incluir más información si lo necesitas
-            },
-            'EduMentorSecretKey',
-            { expiresIn: '1h' },
-            (err, token) => {
-              if (err) {
-                reject(err);
-              } else {
-                resolve(token);
-              }
-            }
-          );
-        });
-        return token;
-      } else {
-        console.log('Contrasena incorrecta, Inicio de sesion fallido');
-        return 0;
-      }
-    } else {
-      console.log('Usuario no encontrado');
-      return 0;
+// Aqui haremos la funcion para verificar el token cada vez que estemos dentro del panel
+// de asesorias e inscripciones
+
+async function verificarToken() {
+  try {
+    // Obtener el valor de la cookie "jwt"
+    const jwtCookie = document.cookie
+      .split('; ')
+      .find(cookie => cookie.startsWith('jwt='))
+      .split('=')[1];
+
+    if (!jwtCookie) {
+      // Manejar el caso en que la cookie no esté presente
+      console.error('Cookie "jwt" no encontrada');
+      return;
+    }
+
+    const response = await fetch(`http://127.0.0.1:8080/api/users/verifyToken/${jwtCookie}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Puedes agregar otros encabezados según tus necesidades
+      },
+      // Puedes enviar un cuerpo vacío o algún contenido adicional según tus necesidades
+      body: JSON.stringify({}),
+    });
+
+    if (!response.ok) {
+      // Si la respuesta no es exitosa, redirige o toma alguna acción
+      window.location.replace('403.html');
     }
   } catch (error) {
-    console.error('Error en la función checkData:', error);
-    throw error;
+    console.error('Error al verificar el token:', error);
+    window.location.replace('403.html');
   }
-  // Retornamos resultado de la comprobacion para el lado del servidor Apache
-  return flag;
 }
-
-
-function verifyToken(token) {
-  
-  // Recibimos del body el jwt establecido para dejar entrar a la pagina
-  let secretKey = 'EduMentorSecretKey';
-  console.log("DENTRO DE HANDLER");
-  console.log(token);
-  console.log(typeof token);
-
-  // Verificamos el token
-  jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
-      // El token no es válido
-      console.error('Token no válido', err);
-      return 0;
-    } else {
-      // El token es válido
-      console.log('Token válido', decoded);
-      return 1;
-    }
-  });
-
-}
-
-exports.createUser = createUser;
-exports.checkData = checkData;
-exports.verifyToken = verifyToken;
