@@ -20,7 +20,7 @@ function createUser() {
    console.log(JSON.stringify(usuario));
 
    // Realizamos la solicitud POST al servidor
-   fetch('http://127.0.0.1:8080/api/users', {
+   fetch('https://edumentor.onrender.com/api/users', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ function createUser() {
     .then(response => response.text())  // Cambia response.json() a response.text()
     .then(data => {
       alert('Usuario creado con éxito!');
-      window.location.replace("http://127.0.0.1:8080/home.html");
+      window.location.replace("https://edumentor.onrender.com/home.html");
       console.log(data);
     })
     .catch(error => {
@@ -58,7 +58,7 @@ function loginUser() {
       const mail = document.querySelector('input[placeholder="Email"]').value;
       const password = document.querySelector('input[placeholder="Password"]').value;
 
-      fetch('http://127.0.0.1:8080/api/users/login', {
+      fetch('https://edumentor.onrender.com/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ async function handleLoginButtonClick() {
     if (flag !== '0') {
       setCookie("jwt", flag, 7);
       alert("Inicio de sesión exitoso!");
-      window.location.replace('http://127.0.0.1:8080/asesorias.html');
+      window.location.replace('https://edumentor.onrender.com/asesorias.html');
     } else if (flag === '0') {
       // Puedes mostrar un mensaje adicional si el inicio de sesión no fue exitoso
       alert('Inicio de sesión incorrecto!');
@@ -128,7 +128,7 @@ async function verificarToken() {
       return;
     }
 
-    const response = await fetch(`http://127.0.0.1:8080/api/users/verifyToken/${jwtCookie}`, {
+    const response = await fetch(`https://edumentor.onrender.com/api/users/verifyToken/${jwtCookie}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ async function userData(jwt) {
   return new Promise((resolve, reject) => {
     try {
       // Hacer una solicitud al servidor para obtener datos del usuario
-      fetch('http://127.0.0.1:8080/api/users/userData', {
+      fetch('https://edumentor.onrender.com/api/users/userData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
