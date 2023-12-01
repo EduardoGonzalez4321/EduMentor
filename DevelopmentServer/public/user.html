@@ -76,9 +76,10 @@
             padding: 20px;
         }
 
-        .card-with-padding {
-            padding-bottom: 80px;
+        body{
+            background-color: #279740;
         }
+
 
         .text-container3 {
             font-family: 'Zilla Slab', serif;
@@ -163,6 +164,28 @@
         .side-menu li a:hover {
             background-color: #f6f6f6;
         }
+
+        .card {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        .card-wrapper{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+        }
+
     </style>
     <title>Página de Inicio</title>
 </head>
@@ -187,23 +210,28 @@
                     <li class="nav-item">
                         <a class="nav-link" href="./inscripciones.html" style="font-family: 'Zilla Slab', serif;">Inscripciones</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./user.html" style="font-family: 'Zilla Slab', serif;">Mi Perfil</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="card text-center card-with-padding">
-        <div class="card-header">
-          Perfil
-        </div>
-        <div class="card-body">
-           <img src="https://www.w3schools.com/bootstrap4/img_avatar3.png" id="image" alt="Avatar" style="width:200px">
-           <p></p>
-           <h5 class="card-title" id="Nombre">Nombre</h5>
-           <hr>
-           <p class="card-text" id="email">Correo</p>
-           <p class="card-text" id="Rol">Estudiante</p>
-           <p class="card-text" id="Sexo">Hombre</p>
+    <div class="card-wrapper">
+        <div class="card text-center">
+            <div class="card-header">
+              Perfil
+            </div>
+            <div class="card-body">
+               <img src="https://www.w3schools.com/bootstrap4/img_avatar3.png" id="image" alt="Avatar" style="width:200px">
+               <p></p>
+               <h5 class="card-title" id="Nombre">Nombre</h5>
+               <hr>
+               <p class="card-text" id="email">Correo</p>
+               <p class="card-text" id="Rol">Estudiante</p>
+               <p class="card-text" id="Sexo">Hombre</p>
+            </div>
         </div>
     </div>
 
